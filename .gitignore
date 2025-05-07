@@ -277,3 +277,8 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
                     text=f"💰 У вас еще есть монеты: {player.balance}",
                     reply_markup=create_main_menu()
                 )    #проверка времени ожидания
+        elif query.data == 'current_balance':
+            await query.edit_message_text(
+                text=f"💰 Баланс: {player.balance} монет",
+                reply_markup=create_main_menu()
+            )  #обработка кнопки баланса
