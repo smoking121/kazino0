@@ -139,3 +139,16 @@ async def show_performance(update: Update, player: PlayerProfile):
         f"💵 Чистая прибыль: {f'+{net_result}' if net_result >= 0 else net_result}\n\n"
         f"⏳ Последние игры:\n"
     )  #создаю статистику игр
+    for game in player.past_games[-5:][::-1]:
+        icon = "🎲" if game['mode'] == 'roll' else "🏀" if game['mode'] == 'hoop' else "⚽" if game[
+                                                                                                'mode'] == 'goal' else "🎯"
+        result_icon = "🟢" if game['outcome'] == 'win' else "🔴"
+        bet_kind = game['bet']
+        points = game['points']
+        game_time = game['timestamp'][11:16]
+
+        performance_text += (
+            f"{result_icon} {icon} {game['mode']} ({bet_kind}) "
+            f"{'+' if game['outcome'] == 'win' else '-'}{abs(points)} "
+            f"({game_time})\n"
+        )  #отображение последних игр в казино
