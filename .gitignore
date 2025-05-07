@@ -234,4 +234,11 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
                     text=f"{game_title}\nВыберите ставку:",
                     reply_markup=create_sport_menu(game_mode)
                 )   #выбор меню для игры
+        elif any(query.data.startswith(game) for game in
+                 ['roll_', 'hoop_', 'goal_', 'dart_']):
+            parts = query.data.split('_')
+            game_mode = parts[0]
+            bet_kind = parts[1]
 
+            context.user_data['game_mode'] = game_mode
+            context.user_data['bet_kind'] = bet_kind   #обработчик ставок в казино
