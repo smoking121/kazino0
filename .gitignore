@@ -324,3 +324,12 @@ async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
                 )
             except ValueError:
                 await update.message.reply_text("❌ ID пользователя должен быть числом!")   #обработка ID получателя омнет
+        elif context.user_data['transfer_state'] == 'awaiting_amount':
+            try:
+                amount = int(update.message.text)
+                if amount <= 0:
+                    await update.message.reply_text("❌ Сумма должна быть больше 0!")
+                    return
+                if amount > player.balance:
+                    await update.message.reply_text(f"❌ Недостаточно монет! Ваш баланс: {player.balance}")
+                    return    #обработка суммы перевода
