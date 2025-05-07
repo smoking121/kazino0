@@ -210,3 +210,8 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     try:
         await query.answer()
         player = get_player_profile(update.effective_user.id) # основной обработчик кнопок в боте
+        if query.data == 'roll_game':
+            await query.edit_message_text(
+                text="🎲 Выберите тип ставки:",
+                reply_markup=create_dice_menu()
+            )   # обработчик игры в кубик
