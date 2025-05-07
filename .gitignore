@@ -265,3 +265,15 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
                         text=f"💰 Вам начислено {INITIAL_BALANCE} монет!\nБаланс: {player.balance}",
                         reply_markup=create_main_menu()
                     )    #обработка кнопки пополнения
+                else:
+                    remaining = player.get_wait_time()
+                    minutes, seconds = divmod(remaining, 60)
+                    await query.edit_message_text(
+                        text=f"⏳ Вы сможете получить монеты через {minutes} мин {seconds} сек",
+                        reply_markup=create_main_menu()
+                    )
+            else:
+                await query.edit_message_text(
+                    text=f"💰 У вас еще есть монеты: {player.balance}",
+                    reply_markup=create_main_menu()
+                )    #проверка времени ожидания
