@@ -314,3 +314,13 @@ async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
                 if recipient_id == player.telegram_id:
                     await update.message.reply_text("❌ Нельзя передавать монеты самому себе!")
                     return    #обработчик сообщений в передаче монет
+                context.user_data['recipient_id'] = recipient_id
+                context.user_data['transfer_state'] = 'awaiting_amount'
+
+                await update.message.reply_text(
+                    "💸 Введите сумму монет для передачи:",
+                    reply_markup=InlineKeyboardMarkup(
+                        [[InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]])
+                )
+            except ValueError:
+                await update.message.reply_text("❌ ID пользователя должен быть числом!")   #обработка ID получателя омнет
