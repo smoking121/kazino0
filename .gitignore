@@ -104,10 +104,20 @@ def create_dice_menu():
 
 
 def create_sport_menu(game_mode):
-    icon = "🏀" if game_mode == "hoop" else "⚽" if game_mode == "goal" else "🎯"
+    icon = "🏀" if game_mode == "hoop" else "⚽"
+    description = {
+        'hoop': {
+            'hit': "Попадет (x2, если 4-6; x1.5 если 3)",
+            'miss': "Пропустит (x2, если 1-2)"
+        },
+        'goal': {
+            'hit': "Попадет (x2, если 4-6; x1.5 если 3)",
+            'miss': "Пропустит (x2, если 1-2)"
+        }
+    }
     menu = [
-        [InlineKeyboardButton(f"{icon} Пропустит (x2)", callback_data=f'{game_mode}_miss')],
-        [InlineKeyboardButton(f"{icon} Попадет (x2)", callback_data=f'{game_mode}_hit')],
+        [InlineKeyboardButton(f"{icon} {description[game_mode]['miss']}", callback_data=f'{game_mode}_miss')],
+        [InlineKeyboardButton(f"{icon} {description[game_mode]['hit']}", callback_data=f'{game_mode}_hit')],
         [InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]
     ]
     return InlineKeyboardMarkup(menu) #создаю меню для футбола и баскетбола
@@ -507,18 +517,59 @@ async def play_sport(update: Update, context: ContextTypes.DEFAULT_TYPE, player:
         }[game_mode]
 
         sport_result = await update.message.reply_dice(emoji=icon)
-        await asyncio.sleep(3)  #функция для игры в баскетбол и футбол с одинаковой логикой
+        await asyncio.sleep(3)
+
         dice_value = sport_result.dice.value
-        is_success = dice_value in [4, 5, 6]
-        player_bet = (bet_kind == 'hit')
-        is_win = (player_bet == is_success)
+        multiplier = 1
+        special_event = ""
+
+        # Определяем исход броска
+        if dice_value == 3:
+            # Особый случай - выпало 3
+            multiplier = 1.5
+            if game_mode == 'hoop':
+                special_event = " (мяч застрял в кольце)"
+                is_success = True  # В баскетболе 3 - это попадание с бонусом
+            else:
+                special_event = " ( )"
+                is_success = True  # В футболе 3 - это попадание с бонусом
+        elif dice_value in [4, 5, 6]:
+            is_success = True  # Обычное попадание
+        else:
+            is_success = False  # Промах
+
+        # Определяем ставку игрока
+        player_bet_hit = (bet_kind == 'hit')
+
+        # Определяем результат ставки
+        is_win = (player_bet_hit == is_success)
+
         if is_win:
-            win_amount = bet_amount * 2
+            win_amount = int(bet_amount * multiplier)  # Учитываем множитель
             player.balance += win_amount
-            result_msg = f"{icon} Выпало: {dice_value} ({'Успех' if is_success else 'Пропуск'})\n🎉 Выигрыш: +{win_amount} монет!"
+            result = 'win'
+            result_msg = (f"{icon} Выпало: {dice_value}{special_event}\n"
+                          f"🎉 Выигрыш: +{win_amount} монет (x{multiplier})!")
         else:
             player.balance -= bet_amount
-            result_msg = f"{icon} Выпало: {dice_value} ({'Успех' if is_success else 'Пропуск'})\n😢 Проигрыш: -{bet_amount} монет."   #расчет выигрыша и проигрыша
+            result = 'lose'
+            result_msg = f"{icon} Выпало: {dice_value}\n😢 Проигрыш: -{bet_amount} монет."
+
+        bet_title = 'Попадет' if bet_kind == 'hit' else 'Пропустит'
+        player.record_game(game_mode, bet_title, result, win_amount if is_win else -bet_amount)
+
+        await update.message.reply_text(
+            text=result_msg,
+            reply_markup=create_main_menu()
+        )
+    except Exception as e:
+        print(f"Ошибка в {game_mode}: {e}")
+        await update.message.reply_text(
+            text="⚠️ Ошибка. Ставка возвращена.",
+            reply_markup=create_main_menu()
+        )
+    finally:
+        context.user_data.clear()   #расчет выигрыша и проигрыша
 
 
 def run_bot() -> None:
