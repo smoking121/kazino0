@@ -19,3 +19,12 @@ class PlayerProfile:
         self.telegram_id = telegram_id
         self.balance = INITIAL_BALANCE
         self.last_refill = 0 #создал класс, для хранния данных игрока
+    def can_refill(self):
+        return time.time() - self.last_refill >= WAIT_TIME
+
+    def refill_balance(self):
+        if self.can_refill():
+            self.balance = INITIAL_BALANCE
+            self.last_refill = time.time()
+            return True
+        return False #создал систему пополнения баланса, если у вас закончились деньги
