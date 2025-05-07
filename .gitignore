@@ -370,3 +370,9 @@ async def process_bet(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         if bet_amount > player.balance:
             await update.message.reply_text(f"❌ Недостаточно монет! Баланс: {player.balance}")
             return  #здесь добавляю функцию process_bet для обработки ставки
+        if 'game_mode' not in context.user_data:
+            await update.message.reply_text("⚠️ Ошибка игры. Начните заново.")
+            return
+
+        game_mode = context.user_data['game_mode']
+        bet_kind = context.user_data['bet_kind'] # определение игры
