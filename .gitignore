@@ -392,3 +392,13 @@ async def play_dice(update: Update, context: ContextTypes.DEFAULT_TYPE, player: 
         dice_result = await update.message.reply_dice(emoji="🎲")
         dice_value = dice_result.dice.value
         await asyncio.sleep(3) #функция игры в кубик 
+        is_win = False
+
+        if bet_kind == 'high' and dice_value > 3:
+            is_win = True
+        elif bet_kind == 'low' and dice_value < 3:
+            is_win = True
+        elif bet_kind == 'even' and dice_value % 2 == 0:
+            is_win = True
+        elif bet_kind == 'odd' and dice_value % 2 != 0:
+            is_win = True # определение результата при броске
