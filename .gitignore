@@ -12,6 +12,7 @@ from telegram.ext import (
     ContextTypes
 )
 
+
 INITIAL_BALANCE = 100
 WAIT_TIME = 600 #здесь я добавил базовые импорты и константы дабы бот запустился
 class PlayerProfile:
@@ -21,6 +22,7 @@ class PlayerProfile:
         self.last_refill = 0 #создал класс, для хранния данных игрока
     def can_refill(self):
         return time.time() - self.last_refill >= WAIT_TIME
+
 
     def refill_balance(self):
         if self.can_refill():
@@ -33,9 +35,13 @@ class PlayerProfile:
         self.losses_count = 0
         self.total_won = 0
         self.total_lost = 0 #добавил хранение истории игр
+
+
     def get_wait_time(self):
         remaining = WAIT_TIME - (time.time() - self.last_refill)
         return max(0, int(remaining)) #добавил метод get_wait_time, для расчета времени ожидания между выдачей денег
+
+
     def record_game(self, game_mode, bet_kind, outcome, points):
         self.past_games.append({
             'mode': game_mode,
@@ -54,11 +60,15 @@ class PlayerProfile:
         if len(self.past_games) > 20:
             self.past_games.pop(0) #здесь я добавил обновление статистики при игре
 player_accounts = {} #хранение профилей игроков, которые зайдут в бота
+
+
 def get_player_profile(user_id):
     if user_id not in player_accounts:
         player_accounts[user_id] = PlayerProfile(user_id)
     return player_accounts[user_id]  #добавил метод get_player_profile, для полученияяя профиля игрокао
 #создаю главную менюшку своего казино 
+
+
 def create_main_menu():
     menu = [
         [InlineKeyboardButton("🎲 Кубик", callback_data='roll_game')],
@@ -75,3 +85,14 @@ def create_main_menu():
         ]
     ]
     return InlineKeyboardMarkup(menu)
+
+
+def create_dice_menu():
+    menu = [
+        [InlineKeyboardButton(">3 (x2)", callback_data='roll_high')],
+        [InlineKeyboardButton("<3 (x2)", callback_data='roll_low')],
+        [InlineKeyboardButton("Четное (x2)", callback_data='roll_even')],
+        [InlineKeyboardButton("Нечетное (x2)", callback_data='roll_odd')],
+        [InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]
+    ]
+    return InlineKeyboardMarkup(menu) #создаю меню для кубика
