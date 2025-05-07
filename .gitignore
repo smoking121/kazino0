@@ -288,3 +288,10 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
                 text="💸 Введите ID пользователя, которому хотите передать монеты:",
                 reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]])
             )   #обработка кнопки перевода деенег в боте от игрока к игроку по ID  в телеграмме
+        elif query.data == 'return_to_menu':
+            if 'transfer_state' in context.user_data:
+                del context.user_data['transfer_state']
+            await query.edit_message_text(
+                text=f"💰 Баланс: {player.balance} монет",
+                reply_markup=create_main_menu()
+            )   #обработка кнопки возвращения  вменю
