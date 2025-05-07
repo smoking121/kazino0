@@ -36,3 +36,11 @@ class PlayerProfile:
     def get_wait_time(self):
         remaining = WAIT_TIME - (time.time() - self.last_refill)
         return max(0, int(remaining)) #добавил метод get_wait_time, для расчета времени ожидания между выдачей денег
+    def record_game(self, game_mode, bet_kind, outcome, points):
+        self.past_games.append({
+            'mode': game_mode,
+            'bet': bet_kind,
+            'outcome': outcome,
+            'points': points,
+            'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")
+        })    #добавил метод record_game, для записи результатов игры
