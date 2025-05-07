@@ -191,3 +191,11 @@ async def show_exchange_rate(update: Update, context: ContextTypes.DEFAULT_TYPE)
         response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
         data = response.json()
         usd_value = data['Valute']['USD']['Value']    #обработчик команды /kurs, который показывает офф курс доллара на сегодняйщий день с офф сайта Рф
+        rate_msg = (
+            f"💵 Текущий курс доллара (ЦБ РФ):\n"
+            f"1 USD = {usd_value:.2f} RUB\n\n"
+            f"📅 Дата обновления: {data['Date'][:10]}"
+        )
+        await update.message.reply_text(rate_msg, reply_markup=create_main_menu())        #обработчик команды /kurs, который показывает офф курс доллара на сегодняйщий день с офф сайта Рф
+
+
