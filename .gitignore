@@ -242,3 +242,17 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
             context.user_data['game_mode'] = game_mode
             context.user_data['bet_kind'] = bet_kind   #обработчик ставок в казино
+            bet_title = {
+                'high': ">3", 'low': "<3", 'even': "Четное", 'odd': "Нечетное",
+                'miss': "Пропустит", 'hit': "Попадет",
+                'bullseye': "В яблочко", 'outer': "Внешнее кольцо",
+                'inner': "Внутреннее кольцо", 'hit': "Попадание"
+            }[bet_kind]
+
+            await query.edit_message_text(
+                text=f"{'🎲' if game_mode == 'roll' else '🏀' if game_mode == 'hoop' else '⚽' if game_mode == 'goal' else '🎯'} "
+                     f"Ставка: {bet_title}\n"
+                     f"💰 Баланс: {player.balance}\n\n"
+                     "Введите сумму ставки:",
+                reply_markup=None
+            )     #добавляю сообщение о вводе суммы ставки
