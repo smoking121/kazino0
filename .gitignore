@@ -333,3 +333,14 @@ async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
                 if amount > player.balance:
                     await update.message.reply_text(f"❌ Недостаточно монет! Ваш баланс: {player.balance}")
                     return    #обработка суммы перевода
+                recipient_id = context.user_data['recipient_id']
+                recipient = get_player_profile(recipient_id)
+
+                player.balance -= amount
+                recipient.balance += amount
+
+                await update.message.reply_text(
+                    f"✅ Вы успешно передали {amount} монет пользователю с ID {recipient_id}\n"
+                    f"💰 Ваш баланс: {player.balance}",
+                    reply_markup=create_main_menu()
+                )  #выполнение перевода монет от игрока к игроку
