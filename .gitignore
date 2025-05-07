@@ -302,3 +302,15 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
             text="⚠️ Ошибка. Попробуйте еще раз.",
             reply_markup=create_main_menu()
         )   #обработка ошибок
+
+
+async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    player = get_player_profile(update.effective_user.id)
+
+    if 'transfer_state' in context.user_data:
+        if context.user_data['transfer_state'] == 'awaiting_user':
+            try:
+                recipient_id = int(update.message.text)
+                if recipient_id == player.telegram_id:
+                    await update.message.reply_text("❌ Нельзя передавать монеты самому себе!")
+                    return    #обработчик сообщений в передаче монет
