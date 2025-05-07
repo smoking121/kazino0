@@ -152,3 +152,7 @@ async def show_performance(update: Update, player: PlayerProfile):
             f"{'+' if game['outcome'] == 'win' else '-'}{abs(points)} "
             f"({game_time})\n"
         )  #отображение последних игр в казино
+    await update.callback_query.edit_message_text(
+        text=performance_text,
+        reply_markup=create_main_menu()
+    )   #отправляем стстистику пользователю через бота
