@@ -33,3 +33,6 @@ class PlayerProfile:
         self.losses_count = 0
         self.total_won = 0
         self.total_lost = 0 #добавил хранение истории игр
+    def get_wait_time(self):
+        remaining = WAIT_TIME - (time.time() - self.last_refill)
+        return max(0, int(remaining)) #добавил метод get_wait_time, для расчета времени ожидания между выдачей денег
