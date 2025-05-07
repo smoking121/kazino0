@@ -344,3 +344,11 @@ async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
                     f"💰 Ваш баланс: {player.balance}",
                     reply_markup=create_main_menu()
                 )  #выполнение перевода монет от игрока к игроку
+                try:
+                    await context.bot.send_message(
+                        chat_id=recipient_id,
+                        text=f"💸 Вам передали {amount} монет от пользователя {update.effective_user.full_name}\n"
+                             f"💰 Ваш баланс: {recipient.balance}"
+                    )
+                except Exception as e:
+                    print(f"Не удалось уведомить получателя: {e}")    #добавил уведомление в самом боте о переводе
