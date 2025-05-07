@@ -28,3 +28,8 @@ class PlayerProfile:
             self.last_refill = time.time()
             return True
         return False #создал систему пополнения баланса, если у вас закончились деньги
+        self.past_games = []
+        self.wins_count = 0
+        self.losses_count = 0
+        self.total_won = 0
+        self.total_lost = 0 #добавил хранение истории игр
