@@ -483,3 +483,23 @@ async def play_darts(update: Update, context: ContextTypes.DEFAULT_TYPE, player:
             text=f"{result_msg}\n💰 Баланс: {player.balance}",
             reply_markup=create_main_menu()
         )    # сохранение игры в статистику
+    except Exception as e:
+        print(f"Ошибка в дартсе: {e}")
+        await update.message.reply_text(
+            text="⚠️ Ошибка. Ставка возвращена.",
+            reply_markup=create_main_menu()
+        )
+    finally:
+        context.user_data.clear()
+
+
+async def play_sport(update: Update, context: ContextTypes.DEFAULT_TYPE, player: PlayerProfile, bet_amount: int,
+                     game_mode: str, bet_kind: str):
+    try:
+        icon = {
+            'hoop': '🏀',
+            'goal': '⚽'
+        }[game_mode]
+
+        sport_result = await update.message.reply_dice(emoji=icon)
+        await asyncio.sleep(3)  #функция для игры в баскетбол и футбол с одинаковой логикой
