@@ -471,3 +471,15 @@ async def play_darts(update: Update, context: ContextTypes.DEFAULT_TYPE, player:
             player.balance -= bet_amount
             result = 'lose'
             result_msg = f"🎯 Попадание: {hit_zone}\n😢 Проигрыш: -{bet_amount} монет."   #расчет выигрыша 
+        bet_title = {
+            'bullseye': 'В яблочко',
+            'outer': 'Внешнее кольцо',
+            'inner': 'Внутреннее кольцо',
+            'hit': 'Попадание'
+        }[bet_kind]
+        player.record_game('dart', bet_title, result, win_amount if is_win else -bet_amount)
+
+        await update.message.reply_text(
+            text=f"{result_msg}\n💰 Баланс: {player.balance}",
+            reply_markup=create_main_menu()
+        )    # сохранение игры в статистику
