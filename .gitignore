@@ -352,3 +352,7 @@ async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
                     )
                 except Exception as e:
                     print(f"Не удалось уведомить получателя: {e}")    #добавил уведомление в самом боте о переводе
+                del context.user_data['transfer_state']
+                del context.user_data['recipient_id']
+            except ValueError:
+                await update.message.reply_text("❌ Введите число!")   #отчищаю состояние перевода 
