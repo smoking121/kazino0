@@ -156,3 +156,19 @@ async def show_performance(update: Update, player: PlayerProfile):
         text=performance_text,
         reply_markup=create_main_menu()
     )   #отправляем стстистику пользователю через бота
+
+
+async def start_bot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    player = get_player_profile(update.effective_user.id)
+    welcome_msg = (
+        f"🎰 Игровой бот | Баланс: {player.balance} монет\n\n"
+        "Доступные команды:\n"
+        "/start - Начать работу с ботом\n"
+        "/help - Получить справку\n"
+        "/kurs - Узнать курс доллара\n\n"
+        "Выберите игру:"
+    )
+    await update.message.reply_text(
+        welcome_msg,
+        reply_markup=create_main_menu()
+    )  #обработчик команды /start в боте
