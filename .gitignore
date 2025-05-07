@@ -19,7 +19,12 @@ class PlayerProfile:
     def __init__(self, telegram_id):
         self.telegram_id = telegram_id
         self.balance = INITIAL_BALANCE
-        self.last_refill = 0 #создал класс, для хранния данных игрока
+        self.last_refill = 0
+        self.past_games = []
+        self.wins_count = 0
+        self.losses_count = 0
+        self.total_won = 0
+        self.total_lost = 0 #создал класс, для хранния данных игрока
     def can_refill(self):
         return time.time() - self.last_refill >= WAIT_TIME
 
