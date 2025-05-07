@@ -172,3 +172,15 @@ async def start_bot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         welcome_msg,
         reply_markup=create_main_menu()
     )  #обработчик команды /start в боте
+
+
+async def show_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    help_msg = (
+        "🆘 Помощь по боту:\n\n"
+        "🎰 Это игровой бот с функциями казино. Доступные игры:\n"
+        "- 🎲 Кубик\n- 🏀 Баскетбол\n- ⚽ Футбол\n- 🎯 Дартс\n\n"
+        "💰 Вы можете передавать монеты другим игрокам\n"
+        "📊 Просматривать статистику своих игр\n\n"
+        "Если у вас возникли проблемы, обратитесь к @skyhardcore"
+    )
+    await update.message.reply_text(help_msg, reply_markup=create_main_menu())    #обработчик команды /help  в боте
