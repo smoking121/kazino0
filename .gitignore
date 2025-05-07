@@ -215,3 +215,13 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
                 text="🎲 Выберите тип ставки:",
                 reply_markup=create_dice_menu()
             )   # обработчик игры в кубик
+        elif query.data == 'performance':
+            await show_performance(update, player)   #кнопка статитстики
+        elif query.data in ['hoop_game', 'goal_game', 'dart_game']:
+            game_mode = query.data.split('_')[0]
+            game_title = {
+                'hoop': "🏀 Попадет ли мяч в корзину?",
+                'goal': "⚽ Забьет ли игрок гол?",
+                'dart': "🎯 Куда попадет дротик?"
+            }[game_mode]  # обработчик баскетбола и футбола
+
