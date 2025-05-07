@@ -295,3 +295,10 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
                 text=f"💰 Баланс: {player.balance} монет",
                 reply_markup=create_main_menu()
             )   #обработка кнопки возвращения  вменю
+    except Exception as e:
+        print(f"Ошибка: {e}")
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="⚠️ Ошибка. Попробуйте еще раз.",
+            reply_markup=create_main_menu()
+        )   #обработка ошибок
