@@ -356,3 +356,17 @@ async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
                 del context.user_data['recipient_id']
             except ValueError:
                 await update.message.reply_text("❌ Введите число!")   #отчищаю состояние перевода 
+    else:
+        await process_bet(update, context)
+
+
+async def process_bet(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    player = get_player_profile(update.effective_user.id)
+    try:
+        bet_amount = int(update.message.text)
+        if bet_amount <= 0:
+            await update.message.reply_text("❌ Ставка должна быть больше 0!")
+            return
+        if bet_amount > player.balance:
+            await update.message.reply_text(f"❌ Недостаточно монет! Баланс: {player.balance}")
+            return  #здесь добавляю функцию process_bet для обработки ставки
