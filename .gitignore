@@ -376,3 +376,9 @@ async def process_bet(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
         game_mode = context.user_data['game_mode']
         bet_kind = context.user_data['bet_kind'] # определение игры
+        if game_mode == 'roll':
+            await play_dice(update, context, player, bet_amount, bet_kind)
+        elif game_mode == 'dart':
+            await play_darts(update, context, player, bet_amount, bet_kind)
+        else:
+            await play_sport(update, context, player, bet_amount, game_mode, bet_kind)  #выбор обработчика игры
