@@ -197,5 +197,16 @@ async def show_exchange_rate(update: Update, context: ContextTypes.DEFAULT_TYPE)
             f"📅 Дата обновления: {data['Date'][:10]}"
         )
         await update.message.reply_text(rate_msg, reply_markup=create_main_menu())        #обработчик команды /kurs, который показывает офф курс доллара на сегодняйщий день с офф сайта Рф
+    except Exception as e:
+        print(f"Ошибка при получении курса: {e}")
+        await update.message.reply_text(
+            "⚠️ Не удалось получить курс доллара. Попробуйте позже.",
+            reply_markup=create_main_menu()
+        )
 
 
+async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    try:
+        await query.answer()
+        player = get_player_profile(update.effective_user.id) # основной обработчик кнопок в боте
