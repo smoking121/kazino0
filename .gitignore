@@ -44,3 +44,12 @@ class PlayerProfile:
             'points': points,
             'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")
         })    #добавил метод record_game, для записи результатов игры
+        if outcome == 'win':
+            self.wins_count += 1
+            self.total_won += points
+        else:
+            self.losses_count += 1
+            self.total_lost += points
+
+        if len(self.past_games) > 20:
+            self.past_games.pop(0) #здесь я добавил обновление статистики при игре
