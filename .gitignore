@@ -1,1 +1,16 @@
+import random
+import time
+import asyncio
+import requests
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    CallbackQueryHandler,
+    MessageHandler,
+    filters,
+    ContextTypes
+)
 
+INITIAL_BALANCE = 100
+WAIT_TIME = 600 #здесь я добавил базовые импорты и константы дабы бот запустился
