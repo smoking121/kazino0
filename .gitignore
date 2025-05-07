@@ -58,3 +58,20 @@ def get_player_profile(user_id):
     if user_id not in player_accounts:
         player_accounts[user_id] = PlayerProfile(user_id)
     return player_accounts[user_id]  #добавил метод get_player_profile, для полученияяя профиля игрокао
+#создаю главную менюшку своего казино 
+def create_main_menu():
+    menu = [
+        [InlineKeyboardButton("🎲 Кубик", callback_data='roll_game')],
+        [InlineKeyboardButton("🏀 Баскетбол", callback_data='hoop_game')],
+        [InlineKeyboardButton("⚽ Футбол", callback_data='goal_game')],
+        [InlineKeyboardButton("🎯 Дартс", callback_data='dart_game')],
+        [
+            InlineKeyboardButton("📊 Статистика", callback_data='performance'),
+            InlineKeyboardButton("💰 Монеты", callback_data='refill_balance')
+        ],
+        [
+            InlineKeyboardButton("ℹ️ Баланс", callback_data='current_balance'),
+            InlineKeyboardButton("💸 Передать монеты", callback_data='send_points')
+        ]
+    ]
+    return InlineKeyboardMarkup(menu)
