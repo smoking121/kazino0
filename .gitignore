@@ -503,3 +503,14 @@ async def play_sport(update: Update, context: ContextTypes.DEFAULT_TYPE, player:
 
         sport_result = await update.message.reply_dice(emoji=icon)
         await asyncio.sleep(3)  #функция для игры в баскетбол и футбол с одинаковой логикой
+        dice_value = sport_result.dice.value
+        is_success = dice_value in [4, 5, 6]
+        player_bet = (bet_kind == 'hit')
+        is_win = (player_bet == is_success)
+        if is_win:
+            win_amount = bet_amount * 2
+            player.balance += win_amount
+            result_msg = f"{icon} Выпало: {dice_value} ({'Успех' if is_success else 'Пропуск'})\n🎉 Выигрыш: +{win_amount} монет!"
+        else:
+            player.balance -= bet_amount
+            result_msg = f"{icon} Выпало: {dice_value} ({'Успех' if is_success else 'Пропуск'})\n😢 Проигрыш: -{bet_amount} монет."   #расчет выигрыша и проигрыша
