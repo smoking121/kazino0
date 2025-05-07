@@ -106,3 +106,14 @@ def create_sport_menu(game_mode):
         [InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]
     ]
     return InlineKeyboardMarkup(menu) #создаю меню для футбола и баскетбола
+
+
+def create_darts_menu():
+    menu = [
+        [InlineKeyboardButton("🎯 В яблочко (x5)", callback_data='dart_bullseye')],
+        [InlineKeyboardButton("🎯 Внешнее кольцо (x3)", callback_data='dart_outer')],
+        [InlineKeyboardButton("🎯 Внутреннее кольцо (x2)", callback_data='dart_inner')],
+        [InlineKeyboardButton("🎯 Попадание (x1.5)", callback_data='dart_hit')],
+        [InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]
+    ]
+    return InlineKeyboardMarkup(menu) #создаю меню для игры в дартс, с разными коээфициэнтами для выигрыша
