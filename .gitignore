@@ -256,3 +256,12 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
                      "Введите сумму ставки:",
                 reply_markup=None
             )     #добавляю сообщение о вводе суммы ставки
+        elif query.data == 'refill_balance':
+            if player.balance <= 0:
+                if player.can_refill():
+                    player.balance = INITIAL_BALANCE
+                    player.last_refill = time.time()
+                    await query.edit_message_text(
+                        text=f"💰 Вам начислено {INITIAL_BALANCE} монет!\nБаланс: {player.balance}",
+                        reply_markup=create_main_menu()
+                    )    #обработка кнопки пополнения
