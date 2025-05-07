@@ -117,3 +117,25 @@ def create_darts_menu():
         [InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]
     ]
     return InlineKeyboardMarkup(menu) #создаю меню для игры в дартс, с разными коээфициэнтами для выигрыша
+
+
+async def show_performance(update: Update, player: PlayerProfile):
+    if not player.past_games:
+        await update.callback_query.edit_message_text(
+            text="📊 У вас еще нет истории игр",
+            reply_markup=create_main_menu()
+        )
+        return
+    games_played = player.wins_count + player.losses_count
+    success_rate = (player.wins_count / games_played * 100) if games_played > 0 else 0
+    net_result = player.total_won - player.total_lost
+    performance_text = (
+        f"📊 Общая статистика:\n"
+        f"🎮 Всего игр: {games_played}\n"
+        f"✅ Выигрыши: {player.wins_count} ({success_rate:.1f}%)\n"
+        f"❌ Проигрыши: {player.losses_count}\n"
+        f"💰 Суммарный выигрыш: +{player.total_won}\n"
+        f"💸 Суммарный проигрыш: -{player.total_lost}\n"
+        f"💵 Чистая прибыль: {f'+{net_result}' if net_result >= 0 else net_result}\n\n"
+        f"⏳ Последние игры:\n"
+    )  #создаю статистику игр
