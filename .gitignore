@@ -430,3 +430,11 @@ async def play_dice(update: Update, context: ContextTypes.DEFAULT_TYPE, player: 
         )
     finally:
         context.user_data.clear()  # завершение игры и пополнение баланса 
+
+
+async def play_darts(update: Update, context: ContextTypes.DEFAULT_TYPE, player: PlayerProfile, bet_amount: int,
+                     bet_kind: str):
+    try:
+        dart_result = await update.message.reply_dice(emoji="🎯")
+        dart_value = dart_result.dice.value
+        await asyncio.sleep(3)  # функция для игры в дартс
