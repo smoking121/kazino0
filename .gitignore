@@ -514,3 +514,16 @@ async def play_sport(update: Update, context: ContextTypes.DEFAULT_TYPE, player:
         else:
             player.balance -= bet_amount
             result_msg = f"{icon} Выпало: {dice_value} ({'Успех' if is_success else 'Пропуск'})\n😢 Проигрыш: -{bet_amount} монет."   #расчет выигрыша и проигрыша
+def run_bot() -> None:
+    bot_app = Application.builder().token("7603115809:AAF_aHoDSe6SeAPC3jNOYZ9j_88_V_Am5QU").build()
+
+    bot_app.add_handler(CommandHandler("start", start_bot))
+    bot_app.add_handler(CommandHandler("help", show_help))
+    bot_app.add_handler(CommandHandler("kurs", show_exchange_rate))
+    bot_app.add_handler(CallbackQueryHandler(handle_button))
+    bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, process_message))
+
+    bot_app.run_polling()
+
+if __name__ == '__main__':
+    run_bot() # запуск самого бота
