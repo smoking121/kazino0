@@ -184,3 +184,10 @@ async def show_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "Если у вас возникли проблемы, обратитесь к @skyhardcore"
     )
     await update.message.reply_text(help_msg, reply_markup=create_main_menu())    #обработчик команды /help  в боте
+
+
+async def show_exchange_rate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    try:
+        response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
+        data = response.json()
+        usd_value = data['Valute']['USD']['Value']    #обработчик команды /kurs, который показывает офф курс доллара на сегодняйщий день с офф сайта Рф
