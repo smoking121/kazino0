@@ -402,3 +402,31 @@ async def play_dice(update: Update, context: ContextTypes.DEFAULT_TYPE, player: 
             is_win = True
         elif bet_kind == 'odd' and dice_value % 2 != 0:
             is_win = True # определение результата при броске
+        if is_win:
+            win_amount = bet_amount * 2
+            player.balance += win_amount
+            result = 'win'
+            result_msg = f"🎲 Выпало: {dice_value}\n🎉 Выигрыш: +{win_amount} монет!"
+        else:
+            player.balance -= bet_amount
+            result = 'lose'
+            result_msg = f"🎲 Выпало: {dice_value}\n😢 Проигрыш: -{bet_amount} монет."
+
+        bet_title = {
+            'high': '>3', 'low': '<3',
+            'even': 'Четное', 'odd': 'Нечетное'
+        }[bet_kind]
+        player.record_game('roll', bet_title, result, win_amount if is_win else -bet_amount)
+
+        await update.message.reply_text(
+            text=f"{result_msg}\n💰 Баланс: {player.balance}",
+            reply_markup=create_main_menu()
+        )
+    except Exception as e:
+        print(f"Ошибка в кубике: {e}")
+        await update.message.reply_text(
+            text="⚠️ Ошибка. Ставка возвращена.",
+            reply_markup=create_main_menu()
+        )
+    finally:
+        context.user_data.clear()  # завершение игры и пополнение баланса 
