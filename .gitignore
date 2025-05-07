@@ -451,4 +451,14 @@ async def play_darts(update: Update, context: ContextTypes.DEFAULT_TYPE, player:
             hit_zone = "внешнее кольцо"
             if bet_kind == 'outer':
                 is_win = True
-                multiplier = 3   #здесь я сделал логику дартса, дабы он правильно работал
+                multiplier = 3
+        elif dart_value == 4:
+            hit_zone = "внутреннее кольцо"
+            if bet_kind == 'inner':
+                is_win = True
+                multiplier = 2
+        elif dart_value in [1, 2, 3]:
+            hit_zone = "попадание в доску"
+            if bet_kind == 'hit':
+                is_win = True
+                multiplier = 1.5     #здесь я сделал логику дартса, дабы он правильно работал
