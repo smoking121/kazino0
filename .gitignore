@@ -438,3 +438,17 @@ async def play_darts(update: Update, context: ContextTypes.DEFAULT_TYPE, player:
         dart_result = await update.message.reply_dice(emoji="🎯")
         dart_value = dart_result.dice.value
         await asyncio.sleep(3)  # функция для игры в дартс
+        is_win = False
+        multiplier = 1
+        hit_zone = ""
+
+        if dart_value == 6:
+            hit_zone = "яблочко"
+            if bet_kind == 'bullseye':
+                is_win = True
+                multiplier = 5
+        elif dart_value == 5:
+            hit_zone = "внешнее кольцо"
+            if bet_kind == 'outer':
+                is_win = True
+                multiplier = 3   #здесь я сделал логику дартса, дабы он правильно работал
