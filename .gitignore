@@ -224,4 +224,14 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
                 'goal': "⚽ Забьет ли игрок гол?",
                 'dart': "🎯 Куда попадет дротик?"
             }[game_mode]  # обработчик баскетбола и футбола
+            if game_mode == 'dart':
+                await query.edit_message_text(
+                    text=f"{game_title}\nВыберите ставку:",
+                    reply_markup=create_darts_menu()
+                )
+            else:
+                await query.edit_message_text(
+                    text=f"{game_title}\nВыберите ставку:",
+                    reply_markup=create_sport_menu(game_mode)
+                )   #выбор меню для игры
 
