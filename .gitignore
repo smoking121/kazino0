@@ -96,3 +96,13 @@ def create_dice_menu():
         [InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]
     ]
     return InlineKeyboardMarkup(menu) #создаю меню для кубика
+
+
+def create_sport_menu(game_mode):
+    icon = "🏀" if game_mode == "hoop" else "⚽" if game_mode == "goal" else "🎯"
+    menu = [
+        [InlineKeyboardButton(f"{icon} Пропустит (x2)", callback_data=f'{game_mode}_miss')],
+        [InlineKeyboardButton(f"{icon} Попадет (x2)", callback_data=f'{game_mode}_hit')],
+        [InlineKeyboardButton("🔙 Назад", callback_data='return_to_menu')]
+    ]
+    return InlineKeyboardMarkup(menu) #создаю меню для футбола и баскетбола
