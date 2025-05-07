@@ -382,3 +382,13 @@ async def process_bet(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
             await play_darts(update, context, player, bet_amount, bet_kind)
         else:
             await play_sport(update, context, player, bet_amount, game_mode, bet_kind)  #выбор обработчика игры
+    except ValueError:
+        await update.message.reply_text("❌ Введите число!") # в случае ошибки ввода
+
+
+async def play_dice(update: Update, context: ContextTypes.DEFAULT_TYPE, player: PlayerProfile, bet_amount: int,
+                    bet_kind: str):
+    try:
+        dice_result = await update.message.reply_dice(emoji="🎲")
+        dice_value = dice_result.dice.value
+        await asyncio.sleep(3) #функция игры в кубик 
