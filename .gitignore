@@ -53,3 +53,8 @@ class PlayerProfile:
 
         if len(self.past_games) > 20:
             self.past_games.pop(0) #здесь я добавил обновление статистики при игре
+player_accounts = {} #хранение профилей игроков, которые зайдут в бота
+def get_player_profile(user_id):
+    if user_id not in player_accounts:
+        player_accounts[user_id] = PlayerProfile(user_id)
+    return player_accounts[user_id]  #добавил метод get_player_profile, для полученияяя профиля игрокао
